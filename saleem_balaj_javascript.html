@@ -1,0 +1,90 @@
+<HTML>
+<HEAD>
+<TITLE>JavaScript Scoping</TITLE>
+<script>
+//class objects passed by reference
+class Tester {
+     testVar = 0;
+}
+//functions can be passed as parameters. This is used in fun5
+function cuber(i){
+   return i*i*i;
+}
+//simple positional parameter correspondense
+function fun1( a,  b,  c){
+   console.log ("---FUN1---");
+   console.log ("a is: " + a + " b is: " + b + " c is: " + c); 
+}
+//default values can be assigned
+//can have default values in any order
+function fun2( a,  b=3,  c=3, d ){
+   console.log ("---FUN2---");
+   console.log ("a is: " + a + " b is: " + b + " c is: " + c + " d is: " + d); 
+}
+//variable number of parameters can be provided
+function fun3(){
+   console.log ("---FUN3---");
+   var parameters = ""; //a list to store all given parameters
+   console.log("total parameters provided: " + arguments.length);
+   for (var i = 0; i < arguments.length; i++){
+         parameters += arguments[i] + " | "; 
+   }
+   console.log(parameters);   
+}
+//test for passing methods, only in mode - pass by value - possible for primitive types, 
+//objects are passed by reference - in out mode -
+//fomral variables DO NOT need to have types
+function fun4( a, array, obj){
+   console.log ("---FUN4---");
+   a = a*a;
+   //array += [99,99,99]; //does not change the actual array provided in argument
+   array.push("99");
+   obj.testVar = 9999;
+   console.log ("a inside fun4: " + a);
+   console.log ("array inside fun4: " + array);
+   console.log ("object inside fun4: " + obj.testVar);
+}
+//functions can be passed as arguments in JS
+function fun5(f, i){
+   console.log ("---FUN5---");
+   console.log (f(i));
+}
+//rest parameter(must be last formal parameters)
+function fun6(a,b, ...others){
+   console.log ("---FUN6---");
+   console.log ("a is: " + a);
+   console.log ("b is: " + b);
+   console.log ("rest of the arguments: " + others);
+}
+fun1(1,2,3); //simple positional correspondence
+fun1(1); //only first variable assigned(positionally) rest are undefined
+
+fun2(1); //default value for b and c used, while d is undefined
+fun2(1,undefined,undefined,2) //works, for arguments that are undefined the default value is used
+//fun2(a=1,c=3,b=2); //does not work as expected(works with positional correspondence), No native support for named correspondence of paramters
+
+fun3(1,2,3,4,5,6);//variable number of arguments passed
+fun3(1,2,3,4,5,6,7,8,9,10) //also works
+
+//declaring different data types to check their values after a function, i.e whether the function uses, in , out , or inout methods   
+var a = 3;
+var array = [0,0,0];
+var obj = new Tester();
+console.log ("----------");   
+console.log ("a before fun4: " + a);
+console.log ("array before fun4: " + array);
+console.log ("object before fun4: " + obj.testVar);   
+fun4(a,array,obj);
+console.log ("a after fun4: " + a);
+console.log ("array after fun4: " + array);
+console.log ("object after fun4: " + obj.testVar);
+
+fun5(cuber, 2);
+
+fun6(1,2, 99,99,99,99,99)//positional and variable number of arguments(rest parameters)  
+</script>
+</HEAD>
+<BODY>
+Please open the browser's javascript console (F12) to view the output
+</BODY>
+</HTML>
